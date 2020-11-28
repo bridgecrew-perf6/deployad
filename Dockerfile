@@ -18,12 +18,15 @@ RUN R -e "install.packages(pkgs=c('shiny','shinydashboard','shinythemes','DT','c
 COPY /AnomalyDetection/app.R /srv/shiny-server/
 COPY /AnomalyDetection/www /srv/shiny-server/www
 COPY /AnomalyDetection/data /srv/shiny-server/data
-
+COPY /AnomalyDetection/*.Rproj /srv/shiny-server/
+COPY /AnomalyDetection/shiny-server.sh /usr/bin/shiny-server.sh
 # select port
 EXPOSE 3838
 
 # allow permission
 RUN sudo chown -R shiny:shiny /srv/shiny-server
+
+RUN ["chmod", "+x", "/usr/bin/shiny-server.sh"]
 
 # run app
 CMD ["/usr/bin/shiny-server.sh"]
