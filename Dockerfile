@@ -26,4 +26,4 @@ COPY /AnomalyDetection/Rprofile.site /usr/lib/R/etc/
 # select port
 EXPOSE 3838
 
-CMD ["R", "-e", "shiny::runApp('/app/Shiny')"]
+CMD ["R", "-e", "shiny::runApp('/root/AnomalyDetection')"]
