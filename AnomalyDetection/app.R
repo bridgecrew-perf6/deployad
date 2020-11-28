@@ -13,7 +13,6 @@ library(shinythemes)
 library(DT)
 library(caret)
 library(xgboost)
-library(reactable)
 library(ids)
 library(scales)
 
