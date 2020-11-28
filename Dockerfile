@@ -21,7 +21,7 @@ RUN R -e "install.packages(pkgs=c('shiny','shinydashboard','shinythemes','DT','c
 # copy the app to the image
 RUN mkdir /root/AnomalyDetection
 COPY AnomalyDetection /root/AnomalyDetection
-COPY Rprofile.site /usr/lib/R/etc/
+COPY /AnomalyDetection/Rprofile.site /usr/lib/R/etc/
 
 # select port
 EXPOSE 3838
