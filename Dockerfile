@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libssh2-1-dev 
     
-RUN R -e "install.packages(pkgs=c('shiny','shinydashboard','shinythemes','DT','caret','xgboost','reactable','ids','scales'), repos='https://cran.rstudio.com/')" 
+RUN R -e "install.packages(pkgs=c('shiny','shinydashboard','shinythemes','DT','caret','xgboost','ids','scales'), repos='https://cran.rstudio.com/')" 
     
 # copy the app to the image
 COPY /AnomalyDetection/app.R /srv/shiny-server/
