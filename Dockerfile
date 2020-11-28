@@ -1,5 +1,4 @@
-# get shiny serves plus tidyverse packages image
-FROM rocker/shiny-verse:latest
+FROM openanalytics/r-base
 
 # system libraries of general use
 RUN apt-get update && apt-get install -y \
@@ -10,23 +9,21 @@ RUN apt-get update && apt-get install -y \
     libcairo2-dev \
     libxt-dev \
     libssl-dev \
-    libssh2-1-dev 
+    libssh2-1-dev \
+    libssl1.0.0 \
+ libxml2-dev 
     
+RUN apt-get update -qyy
+
 RUN R -e "install.packages(pkgs=c('shiny','shinydashboard','shinythemes','DT','caret','xgboost','ids','scales'), repos='https://cran.rstudio.com/')" 
-    
+
+
 # copy the app to the image
-COPY /AnomalyDetection/app.R /srv/shiny-server/
-COPY /AnomalyDetection/www /srv/shiny-server/www
-COPY /AnomalyDetection/data /srv/shiny-server/data
-COPY /AnomalyDetection/*.Rproj /srv/shiny-server/
-COPY /AnomalyDetection/shiny-server.sh /usr/bin/shiny-server.sh
+RUN mkdir /root/AnomalyDetection
+COPY AnomalyDetection /root/AnomalyDetection
+COPY Rprofile.site /usr/lib/R/etc/
+
 # select port
 EXPOSE 3838
 
-# allow permission
-RUN sudo chown -R shiny:shiny /srv/shiny-server
-
-RUN ["chmod", "+x", "/usr/bin/shiny-server.sh"]
-
-# run app
-CMD ["/usr/bin/shiny-server.sh"]
+CMD ["R", "-e", "shiny::runApp('/app/Shiny')"]
