@@ -1,8 +1,10 @@
-FROM rocker/shiny:3.5.1 
-RUN apt-get -y install libcurl4-gnutls-dev libxml2-dev libssl-dev; \ rm -r /srv/shiny-server; \ mkdir -p /var/lib/shiny-server/bookmarks/shiny; \ sed -i 's/3838/3838 0.0.0.0/' /etc/shiny-server/shiny-server.conf 
+FROM rocker/shiny:3.5.1
+RUN apt-get update && apt-get install libcurl4-openssl-dev libv8-3.14-dev -y &&\
+  mkdir -p /var/lib/shiny-server/bookmarks/shiny
+# Download and install library
 RUN R -e "install.packages(pkgs=c('shiny','shinydashboard','shinythemes','DT','caret','xgboost','reactable','ids','scales'), repos='https://cran.rstudio.com/')" 
 COPY /AnomalyDetection /srv/shiny-server/ 
-RUN chmod -R +rx /srv/shiny-server/ 
-USER shiny 
-EXPOSE 3838 
-CMD ["/usr/bin/shiny-server.sh"]
+# make all app files readable (solves issue when dev in Windows, but building in Ubuntu)
+RUN chmod -R 755 /srv/shiny-server/
+EXPOSE 3838
+CMD ["/usr/bin/shiny-server.sh"] 
